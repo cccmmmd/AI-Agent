@@ -37,7 +37,7 @@ def generate_x_post(usr_input: str) -> str:
         <examples>
         {examples_str}
         </examples>
-        請參考上方範例中的語氣、語言、結構與風格，生成一篇與使用者提供的主題相關且具吸引力的貼文。
+        請參考上方範例中的語氣、語言、結構與風格，生成一篇與使用者提供的主題相關且具吸引力的繁體中文貼文。
         請勿直接使用範例中的內容！
     """
     response = client.responses.create(model="gpt-4o", input=prompt)
