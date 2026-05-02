@@ -19,15 +19,26 @@
   │ 描述研究任務
   ▼
 ResearchPlannerAgent          ←→  SQLite DB（儲存/管理計畫）
-  │ 與使用者共同制定研究計畫
-  │ 輸出：最終研究計畫文字
+  │ 使用者描述研究任務
+  │→ 與 LLM 對話反覆討論計畫內容
+  │→ 可呼叫工具將計畫存入 / 取出 / 刪除資料庫
+  │→ 使用者輸入 'accept' 後
+  │→ 要求 LLM 產出最終版研究計畫文字並回傳
   ▼
 WebSearchAgent                ←→  Brave Search API（web + news）
-  │ 用 Pydantic structured output 推導關鍵字與時效範圍
-  │ 輸出：搜尋結果列表（url + description）
+  │ 研究計畫文字
+  │→ LLM 用 structured output（pydantic）解析出：
+  │   - search_terms（搜尋關鍵字列表）
+  │   - freshness（時間範圍，如 pw=過去一週）
+  │→ 對每個關鍵字呼叫 Brave Search API
+  │→ 蒐集 web + news 結果（url + description）
+  │→ 回傳結果列表
   ▼
 SummaryReportAgent
-  │ 彙整結果為 Markdown 報告（含來源連結）
+  │ 搜尋結果列表（JSON）
+  │→ 傳給 LLM 摘要整理
+  │→ 去除多餘的 ```markdown 包裝
+  │→ 回傳乾淨的 Markdown 字串
   ▼
 summary_report.md
 ```
@@ -93,6 +104,17 @@ uv run python main.py
 ### 為什麼用 Pydantic structured output？
 
 搜尋需要精確的參數（關鍵字列表、時效代碼）。如果直接解析 LLM 的自然語言回覆，格式錯誤的機率很高。Pydantic 讓 LLM 的輸出有型別保障，大幅降低執行期錯誤。
+如果不用 structured output，LLM 可能回傳：
+```
+搜尋關鍵字：AI 醫療、深度學習診斷...
+時效：過去一個月
+```
+你還需要自己寫解析邏輯，格式一旦變化就壞掉。用 `SearchConfig` 之後，拿到的直接是：
+```python
+search.search_terms  # ["AI 醫療", "深度學習診斷"]
+search.freshness     # "pm"
+```
+型別正確、可直接使用，不需要額外處理。
 
 ---
 
