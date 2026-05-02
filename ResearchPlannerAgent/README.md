@@ -1,3 +1,5 @@
+<img width="548" alt="image" src="https://github.com/user-attachments/assets/34b9c76b-7f88-408c-a304-b83fda360641" />
+
 # Multi-Agent Research Assistant
 
 > 由三個 Agent 協作，從「提出問題」到「產出報告」的全自動 AI 研究助手。
@@ -8,7 +10,7 @@
 
 **手動研究太耗時**：找資料、篩關鍵字、整理來源、撰寫摘要，這些步驟加起來往往要花數小時。
 
-這個專案把整個流程自動化：你只需要用一句話描述研究主題，系統就會幫你規劃研究方向、搜尋網路、整理成一份附有來源連結的 Markdown 報告。
+這個專案把整個流程自動化：只需要用一句話描述研究主題，系統就會規劃研究方向、搜尋網路、整理成一份附有來源連結的 Markdown 報告。
 
 ---
 
@@ -88,7 +90,7 @@ uv run python main.py
 
 ### 操作流程
 
-1. 程式啟動後描述你的研究任務（例如：「AI 在醫療診斷的最新應用」）
+1. 程式啟動後描述研究任務（例如：「AI 在醫療診斷的最新應用」）
 2. 與 Agent 對話，調整研究計畫的範圍與方向
 3. 確認計畫後輸入 `accept`
 4. 系統自動搜尋並整理，完成後在目錄產生 `summary_report.md`
@@ -109,7 +111,7 @@ uv run python main.py
 搜尋關鍵字：AI 醫療、深度學習診斷...
 時效：過去一個月
 ```
-你還需要自己寫解析邏輯，格式一旦變化就壞掉。用 `SearchConfig` 之後，拿到的直接是：
+我還需要自己寫解析邏輯，格式一旦變化就壞掉。用 `SearchConfig` 之後，拿到的直接是：
 ```python
 search.search_terms  # ["AI 醫療", "深度學習診斷"]
 search.freshness     # "pm"
