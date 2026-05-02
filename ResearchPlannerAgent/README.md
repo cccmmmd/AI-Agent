@@ -104,10 +104,10 @@ uv run python main.py
 - 目前為 CLI 工具，無 GUI
 
 **未來 Roadmap**
-- [ ] 加入來源可信度評分機制
-- [ ] 支援匯出 PDF 格式報告
-- [ ] 建立 Web UI（FastAPI + React）
-- [ ] 支援多語言搜尋與報告
+- 加入來源可信度評分機制
+- 支援匯出 PDF 格式報告
+- 建立 Web UI（FastAPI + React）
+- 支援多語言搜尋與報告
 
 ---
 
