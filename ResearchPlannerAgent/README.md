@@ -99,11 +99,11 @@ uv run python main.py
 
 ## 設計思路
 
-### 為什麼拆成三個 Agent？
+### 拆成三個 Agent
 
 單一 Agent 處理所有事情會導致 prompt 過長、職責混亂。三個 Agent 的設計讓每個環節都可以獨立優化——例如未來可以把 `WebSearchAgent` 換成 Perplexity API，或讓 `SummaryReportAgent` 輸出 PDF，而不影響其他部分。
 
-### 為什麼用 Pydantic structured output？
+### 用 Pydantic 把輸出結構化
 
 搜尋需要精確的參數（關鍵字列表、時效代碼）。如果直接解析 LLM 的自然語言回覆，格式錯誤的機率很高。Pydantic 讓 LLM 的輸出有型別保障，大幅降低執行期錯誤。
 如果不用 structured output，LLM 可能回傳：
@@ -117,21 +117,6 @@ search.search_terms  # ["AI 醫療", "深度學習診斷"]
 search.freshness     # "pm"
 ```
 型別正確、可直接使用，不需要額外處理。
-
----
-
-## 已知限制與未來方向
-
-**現有限制**
-- 搜尋結果品質取決於 Brave API 的索引範圍
-- LLM 摘要仍有幻覺風險，建議搭配原始連結人工驗證
-- 目前為 CLI 工具，無 GUI
-
-**未來 Roadmap**
-- 加入來源可信度評分機制
-- 支援匯出 PDF 格式報告
-- 建立 Web UI（FastAPI + React）
-- 支援多語言搜尋與報告
 
 ---
 
