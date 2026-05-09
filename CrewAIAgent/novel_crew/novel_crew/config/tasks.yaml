@@ -1,17 +1,40 @@
-research_task:
+writing_task:
   description: >
-    Conduct a thorough research about {topic}
-    Make sure you find any interesting and relevant information given
-    the current year is {current_year}.
+    請根據主題「{topic}」創作一篇極短篇小說。
+    要求如下：
+    - 使用繁體中文書寫
+    - 字數嚴格控制在500字以內
+    - 須有完整的開頭、發展與結局
+    - 富有情感張力或出人意料的轉折
+    - 可以是任何文學類型：寫實、奇幻、懸疑、愛情等
+    - 給小說一個吸引人的標題
   expected_output: >
-    A list with 10 bullet points of the most relevant information about {topic}
-  agent: researcher
+    一篇完整的繁體中文極短篇小說，包含標題與正文，字數500字以內。
+    不需要任何說明或前言，直接輸出小說內容。
+  agent: writer
 
-reporting_task:
+editing_task:
   description: >
-    Review the context you got and expand each topic into a full section for a report.
-    Make sure the report is detailed and contains any and all relevant information.
+    請仔細審閱作家提交的小說初稿，進行以下工作：
+    - 檢查文字是否流暢自然，修正任何生硬或重複的用詞
+    - 確認情節是否緊湊，刪除不必要的冗餘段落
+    - 強化情感張力最高的段落
+    - 確保整篇字數不超過500字
+    - 保留原有標題或在必要時加以改進
+    請輸出修改後的繁體中文完整小說，不需附上修改說明。
   expected_output: >
-    A fully fledged report with the main topics, each with a full section of information.
-    Formatted as markdown without '```'
-  agent: reporting_analyst
+    經過潤飾的完整繁體中文極短篇小說，包含標題與正文，字數500字以內。
+    格式為純粹的小說內容，無需任何編輯備註。
+  agent: editor
+  output_file: novel.md
+
+illustration_task:
+  description: >
+    請根據這篇小說的核心意象、情感氛圍與主要場景，
+    呼叫 generate_cover_image 工具，直接生成封面插圖並儲存為 cover.png。
+    你需要自行撰寫一段英文 image prompt（50-80字）傳入工具，
+    prompt 需包含：畫面主體、構圖方式、色彩風格、藝術媒介、氛圍關鍵字。
+  expected_output: >
+    成功呼叫 generate_cover_image 工具，封面圖片已儲存為 cover.png。
+    回報圖片已生成完成，並簡短說明畫面內容（繁體中文，一句話即可）。
+  agent: illustrator
