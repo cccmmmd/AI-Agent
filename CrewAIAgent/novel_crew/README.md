@@ -1,4 +1,4 @@
-<img width="548" alt="image" src="https://github.com/user-attachments/assets/f152dcc3-fa21-4387-9e1e-cbc65215a874" />
+<img width="548" alt="image" src="https://github.com/user-attachments/assets/d16743aa-8bc1-46f0-ba41-625f628d61d2" />
 
 # Novel Crew
 > 由三個 Agent 協作，從「輸入主題」到「產出小說與封面」的全自動 AI 極短篇小說生成器。
