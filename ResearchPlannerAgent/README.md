@@ -1,4 +1,5 @@
-<img width="548" alt="image" src="https://github.com/user-attachments/assets/34b9c76b-7f88-408c-a304-b83fda360641" />
+<img width="548" alt="image" src="https://github.com/user-attachments/assets/ba36f24a-514f-45a2-98c9-47bfc70ce6b0" />
+
 
 # Multi-Agent Research Assistant
 
