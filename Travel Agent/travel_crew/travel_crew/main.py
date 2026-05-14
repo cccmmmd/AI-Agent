@@ -131,7 +131,7 @@ def main():
     result = TravelGuideCrew().crew().kickoff(inputs=inputs)
     report_content = str(result)
 
-    filename = build_filename(args.destination, args.date)
+    filename = build_filename(inputs["destination"], inputs["date"])
     filepath = save_report(report_content, filename)
 
     print("\n" + "=" * 55)

@@ -42,15 +42,40 @@ illustrator（插畫師）                ←→  OpenAI gpt-image-1
 
 ---
 
-## 技術亮點
+## 關於 Prompt 的幾個設計決策
 
-| 設計決策 | 原因 |
-|---|---|
-| **三個 Agent 分工，而非單一 Agent** | 關注點分離：創作、編輯、視覺各有專責，更易維護與替換 |
-| **CrewAI sequential process** | 確保每個 Agent 的輸出自動成為下一個 Agent 的輸入，不需手動串接 |
-| **自訂 BaseTool 封裝 OpenAI API** | 將 API 呼叫、base64 解碼、寫檔邏輯收斂到單一工具，Agent 只需傳入 prompt |
-| **agents.yaml / tasks.yaml 分離設定** | Prompt 與程式邏輯解耦，調整角色或任務描述不需動到 Python 程式碼 |
-| **只有插畫師掛載工具** | 作家與編輯不需要外部呼叫，明確限制工具使用範圍，降低非預期行為 |
+**1. Backstory 是在幫 LLM 建立一個「會這樣輸出」的角色**
+
+writer 的 backstory 沒有只說「你是作家」，而是寫了：
+> 你善於在極短的篇幅內建立完整的敘事弧，讓每個字都充滿力量。你的作品常常以意想不到的結局或意象收尾。
+
+這不是裝飾文字，是在告訴 LLM「輸出風格要長這樣」。具體的描述比抽象的頭銜更有效——「意想不到的結局」比「寫得好」更能影響生成方向。
+
+illustrator 的 backstory 裡特別加了一句：「你精通 AI 圖像生成的 prompt，能用精煉的英文描述喚起強烈的視覺感受。」這是刻意的——沒有這句話，LLM 可能輸出一段中文場景描述，然後你就沒辦法直接餵給圖像模型。
+
+**2. 負向約束比正向描述更重要**
+
+task description 裡有幾句話看起來很多餘，其實很關鍵：
+> 不需要任何說明或前言，直接輸出小說內容。
+> 請輸出修改後的繁體中文完整小說，不需附上修改說明。
+
+LLM 的預設行為是「會解釋自己在做什麼」。如果不明確禁止，editor 可能輸出「以下是修改後的版本，我主要做了 XXX 調整……」，這些文字最後會一起寫進 novel.md，破壞輸出品質。負向約束的作用就是把這個預設行為關掉。
+
+**3. illustration task 的格式規格決定圖片品質**
+
+任務描述裡指定了 image prompt 的組成要素：
+> 需包含：畫面主體、構圖方式、色彩風格、藝術媒介、氛圍關鍵字。（50–80 字）
+
+這讓 illustrator 輸出的不是「一個孤獨的人站在月台」，而是類似：
+> A solitary figure on a misty train platform at dusk, wide-angle cinematic composition, muted blue-grey palette, watercolor illustration, melancholic and quiet atmosphere.
+
+同樣是描述同一個場景，後者生成出來的圖會好非常多。
+
+**4. 只有插畫師有工具掛載**
+
+writer 和 editor 不需要任何外部呼叫，給他們工具只會增加誤觸的機率。只有 illustrator 掛了 `GenerateCoverImageTool`，明確限制工具使用範圍。
+
+Tool 本身把「呼叫 API → base64 解碼 → 寫檔」三步封裝進去，Agent 只需要傳一個 prompt 字串，不需要知道 API 的任何細節。
 
 ---
 
@@ -120,7 +145,7 @@ Agent 不需要知道 API 細節，Tool 換掉模型也不影響 Agent 的行為
 ```
 novel_crew/
 ├── main.py              # 入口點，提示輸入主題並啟動 Crew
-├── crew.py              # Crew、Agent、Task 定義
+├── crew.py              # Crew、Agent、Task 的組裝邏輯
 ├── config/
 │   ├── agents.yaml      # 三個 Agent 的角色、目標與背景設定
 │   └── tasks.yaml       # 三個 Task 的任務說明與期望輸出
