@@ -1,7 +1,7 @@
 <img width="548" alt="image" src="https://github.com/user-attachments/assets/ba36f24a-514f-45a2-98c9-47bfc70ce6b0" />
 
 
-# Research Planner Agent — AI 研究助手
+# Research Planner Agent — AI 研究報告助手
 
 > 由三個 Agent 協作，從「提出問題」到「產出報告」的全自動 AI 研究助手。
 
