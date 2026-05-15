@@ -1,6 +1,6 @@
 <img width="548" alt="image" src="https://github.com/user-attachments/assets/d16743aa-8bc1-46f0-ba41-625f628d61d2" />
 
-# Novel Crew
+# Novel Crew － 極短篇小說生成器
 > 由三個 Agent 協作，從「輸入主題」到「產出小說與封面」的全自動 AI 極短篇小說生成器。
 
 ---
@@ -46,7 +46,7 @@ illustrator（插畫師）                ←→  OpenAI gpt-image-1
 
 **1. Backstory 是在幫 LLM 建立一個「會這樣輸出」的角色**
 
-writer 的 backstory 沒有只說「你是作家」，而是寫了：
+writer 的 backstory 不是只說「你是作家」，而是寫了：
 > 你善於在極短的篇幅內建立完整的敘事弧，讓每個字都充滿力量。你的作品常常以意想不到的結局或意象收尾。
 
 這不是裝飾文字，是在告訴 LLM「輸出風格要長這樣」。具體的描述比抽象的頭銜更有效——「意想不到的結局」比「寫得好」更能影響生成方向。
