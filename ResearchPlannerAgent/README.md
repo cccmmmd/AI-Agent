@@ -3,7 +3,7 @@
 
 # Research Planner Agent — AI 研究報告助手
 
-> 由三個 Agent 協作，從「提出問題」到「產出報告」的全自動 AI 研究助手。
+> 未使用任何Agent套件，純 Python 打造三個 Agent 協作，從「提出問題」到「產出報告」的全自動 AI 研究報告助手。
 
 ---
 
