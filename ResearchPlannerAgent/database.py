@@ -38,10 +38,13 @@ def add_research_plan(short_summary: str, details: str) -> Dict[str, Any]:
         return {"id": cursor.lastrowid, "short_summary": short_summary, "details": details}
 
 
-def delete_research_plan(research_plan_id: int):
+def delete_research_plan(research_plan_id: int) -> Dict[str, Any]:
     with get_db_connection() as conn:
-        conn.execute("DELETE FROM research_plans WHERE id = ?", (research_plan_id,))
+        cursor = conn.execute("DELETE FROM research_plans WHERE id = ?", (research_plan_id,))
         conn.commit()
+        if cursor.rowcount == 0:
+            return {"status": "error", "message": f"找不到 ID {research_plan_id} 的研究計畫"}
+        return {"status": "success", "deleted_id": research_plan_id}
 
 
 def init_db():

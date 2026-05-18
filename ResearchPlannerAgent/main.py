@@ -39,16 +39,18 @@ class Tool:
         """
         回傳工具的 JSON Schema，供 OpenAI function calling 使用。
         """
+        parameters: Dict[str, Any] = {
+            "type": "object",
+            "properties": self.parameters,
+            "additionalProperties": False,
+        }
+        if self.parameters:
+            parameters["required"] = list(self.parameters.keys())
         return {
             "type": "function",
             "name": self.name,
             "description": self.description,
-            "parameters": {
-                "type": "object",
-                "properties": self.parameters,
-                "additionalProperties": False,
-                "required": list(self.parameters.keys()),
-            },
+            "parameters": parameters,
         }
 
     def execute(self, arguments: str) -> str:
@@ -222,13 +224,29 @@ class ResearchPlannerAgent(Agent):
                 print("研究計畫已確認，繼續執行...")
                 prompt = "請產出最終版本的研究計畫，只回傳計畫本身，不需要其他說明或評論。"
                 self.messages.append({"role": "user", "content": prompt})
-                response = self.client.responses.create(
-                    model=self.model,
-                    input=self.messages,
-                )
-                print("以下是最終研究計畫：")
-                print(response.output_text)
-                return response.output_text
+
+                for _ in range(MAX_TOOL_CALL_ROUNDS):
+                    response = self.client.responses.create(
+                        model=self.model,
+                        input=self.messages,
+                        tools=self._get_tool_schemas(),
+                    )
+                    reply = response.output[0]
+                    self.messages.append(reply)
+
+                    if reply.type != "function_call":
+                        print("以下是最終研究計畫：")
+                        print(response.output_text)
+                        return response.output_text
+
+                    tool_output = self.execute_tool_call(reply)
+                    self.messages.append(
+                        {
+                            "type": "function_call_output",
+                            "call_id": reply.call_id,
+                            "output": tool_output,
+                        }
+                    )
 
             self.messages.append({"role": "user", "content": user_input})
 
