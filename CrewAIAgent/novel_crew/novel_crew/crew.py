@@ -45,7 +45,6 @@ class NovelCrew():
     def editing_task(self) -> Task:
         return Task(
             config=self.tasks_config['editing_task'],  # type: ignore[index]
-            output_file='novel.md'
         )
 
     @task

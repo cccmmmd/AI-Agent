@@ -13,7 +13,7 @@ run_crew = "novel_crew.main:run"
 train = "novel_crew.main:train"
 replay = "novel_crew.main:replay"
 test = "novel_crew.main:test"
-run_with_trigger = "novel_crew.main:run_with_trigger"
+
 
 [build-system]
 requires = ["hatchling"]
