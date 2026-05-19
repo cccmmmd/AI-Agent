@@ -1,7 +1,7 @@
 # config/tasks.yaml
 # ──────────────────────────────────────────────────────────────
 # 「專業導遊行前智庫」Task 任務定義
-# context 欄位由 main.py 的 @task 裝飾器以程式方式串接，
+# context 欄位由 crew.py 的 @task 裝飾器以程式方式串接，
 # 此處僅定義 description 與 expected_output。
 # ──────────────────────────────────────────────────────────────
 
@@ -60,9 +60,9 @@ safety_task:
     包含詐騙防護盾、禮儀貼士與緊急聯絡資訊。
 
 final_report_task:
-  agent: lead_editor  
+  agent: lead_editor
   description: >
-    你是資深導遊文案主編。請將「國際專業導遊專家」、「國際金融專家」、
+    你是資深導遊文案主編。請將「專業國際導遊」、「國際金融顧問」、
     「文化與安全專家」的調查報告，整合成一份發送給貴賓的行前通知。
 
     目的地：{destination}

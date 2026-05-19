@@ -11,7 +11,7 @@ crew.py
 
 import os
 from typing import List
-from functools import lru_cache
+from functools import cached_property
 
 from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
@@ -37,10 +37,10 @@ class TravelGuideCrew:
     agents_config = "config/agents.yaml"
     tasks_config  = "config/tasks.yaml"
 
-    @lru_cache(maxsize=1)
+    @cached_property
     def _llm(self):
         return LLM(
-            model=os.environ.get("OPENAI_MODEL", "gpt-4o-mini"),
+            model=os.environ.get("OPENAI_MODEL", "gpt-4o"),
             temperature=0.3,
             api_key=os.environ.get("OPENAI_API_KEY", ""),
         )
@@ -53,8 +53,8 @@ class TravelGuideCrew:
         return Agent(
             config=self.agents_config["logistics_officer"],  # type: ignore[index]
             tools=[logistics_search],
-            llm=self._llm(),
-            max_iter=2,
+            llm=self._llm,
+            max_iter=3,
             verbose=True,
             allow_delegation=False,
         )
@@ -65,9 +65,9 @@ class TravelGuideCrew:
         return Agent(
             config=self.agents_config["financial_advisor"],  # type: ignore[index]
             tools=[financial_search],
-            llm=self._llm(),
+            llm=self._llm,
             verbose=True,
-            max_iter=2,
+            max_iter=3,
             allow_delegation=False,
         )
 
@@ -77,9 +77,9 @@ class TravelGuideCrew:
         return Agent(
             config=self.agents_config["safety_culture_expert"],  # type: ignore[index]
             tools=[safety_culture_search],
-            llm=self._llm(),
+            llm=self._llm, 
             verbose=True,
-            max_iter=2,
+            max_iter=3,
             allow_delegation=False,
         )
 
@@ -89,9 +89,9 @@ class TravelGuideCrew:
         return Agent(
             config=self.agents_config["lead_editor"],  # type: ignore[index]
             tools=[],
-            llm=self._llm(),
+            llm=self._llm,
             verbose=True,
-            max_iter=2,
+            max_iter=3,
             allow_delegation=True,
         )
 

@@ -8,7 +8,6 @@ main.py
 
 import sys
 import warnings
-import argparse
 import re
 from datetime import datetime
 from pathlib import Path
@@ -43,6 +42,24 @@ def save_report(content: str, filename: str) -> Path:
     return filepath
 
 
+def _kickoff_and_save(inputs: dict) -> None:
+    """
+    統一的執行 + 儲存邏輯，供 run() 與 main() 共用。
+    報告統一以帶時間戳的動態檔名存入 reports/ 資料夾。
+    """
+    result = TravelGuideCrew().crew().kickoff(inputs=inputs)
+    report_content = str(result)
+
+    filename = build_filename(inputs["destination"], inputs["date"])
+    filepath = save_report(report_content, filename)
+
+    print("\n" + "=" * 55)
+    print(" 報告產出完成！")
+    print(f" 檔案位置：{filepath.resolve()}")
+    print("=" * 55 + "\n")
+    print(report_content)
+
+
 # ══════════════════════════════════════════
 #  crewAI 標準函式（供 crewai run / train 使用）
 # ══════════════════════════════════════════
@@ -54,7 +71,7 @@ def get_user_inputs():
 
     # 目的地
     destination = input("\n請輸入旅遊目的地，國家 城市（例：日本 東京）：").strip() or "日本 東京"
-    
+
     # 日期
     date = input("\n📅 請輸入出發日期（例：2026年8月）：").strip() or "2026年4月"
 
@@ -78,11 +95,13 @@ def get_user_inputs():
         "date": date,
         "customer_type": customer_type,
     }
+
+
 def run():
-   
-    inputs = inputs = get_user_inputs()
+    """供 crewai run 指令使用。"""
+    inputs = get_user_inputs()
     try:
-        TravelGuideCrew().crew().kickoff(inputs=inputs)
+        _kickoff_and_save(inputs)
     except Exception as e:
         raise Exception(f"An error occurred while running the crew: {e}")
 
@@ -127,18 +146,10 @@ def test():
 
 def main():
     inputs = get_user_inputs()
-
-    result = TravelGuideCrew().crew().kickoff(inputs=inputs)
-    report_content = str(result)
-
-    filename = build_filename(inputs["destination"], inputs["date"])
-    filepath = save_report(report_content, filename)
-
-    print("\n" + "=" * 55)
-    print(" 報告產出完成！")
-    print(f" 檔案位置：{filepath.resolve()}")
-    print("=" * 55 + "\n")
-    print(report_content)
+    try:
+        _kickoff_and_save(inputs)
+    except Exception as e:
+        raise Exception(f"An error occurred while running the crew: {e}")
 
 
 if __name__ == "__main__":
