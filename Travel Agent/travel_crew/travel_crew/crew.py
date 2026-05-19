@@ -125,7 +125,6 @@ class TravelGuideCrew:
                 self.financial_task(),
                 self.safety_task(),
             ],
-            output_file="report.md",
         )
 
     # ── Crew ──────────────────────────────

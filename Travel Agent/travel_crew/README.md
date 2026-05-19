@@ -37,7 +37,7 @@
       reports/行前報告_{目的地}_{日期}_{timestamp}.md
 ```
 
-前三個調查 Agent（logistics、financial、safety）在**邏輯上互相獨立**，沒有任何依賴關係，但因為 `Process.sequential`，實際執行時仍是**一個接一個依序跑完**，不是真正的並發。`final_report_task` 透過 `context` 參數同時拿到三份調查結果，再由主編整合輸出。
+前三個調查 Agent（logistics、financial、safety）在**邏輯獨立、無相互依賴**，但因為 `Process.sequential`，實際執行時仍是**一個接一個依序跑完**，不是並發。`final_report_task` 透過 `context` 參數同時拿到三份調查結果，再由主編整合輸出。
 
 ---
 
@@ -132,9 +132,16 @@ uv run travel_crew
 ### 操作流程
 
 1. 程式啟動後輸入旅遊目的地（例如：`義大利 羅馬`）
-2. 輸入出發日期（例如：`2026年10月`）
+2. 輸入出發日期（例如：`2026 7月`）
 3. 從選單選擇客戶類型
 4. 系統自動完成搜尋與整合，在 `reports/` 目錄產生帶有 timestamp 的行前報告
+
+### 輸出說明
+報告統一輸出至 `reports/` 目錄：
+
+  `reports/行前報告_{目的地}_{日期}_{timestamp}.md`
+
+每次執行產生一份獨立檔案，不會互相覆蓋，方便留檔。
 
 ---
 
@@ -165,7 +172,7 @@ def final_report_task(self) -> Task:
 
 ### `temperature=0.3`，調查類任務要的是準確不是創意
 
-所有 Agent 共用同一個 LLM 設定，透過 `lru_cache` 確保只建立一個實例。temperature 設 0.3，讓調查 Agent 的輸出偏向穩定、可重現，不會每次查同一個目的地給出差異很大的建議。
+所有 Agent 共用同一個 LLM 設定，temperature 設 0.3，讓調查 Agent 的輸出偏向穩定、可重現，不會每次查同一個目的地給出差異很大的建議。
 
 ---
 

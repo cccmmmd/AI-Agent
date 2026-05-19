@@ -65,9 +65,6 @@ def _kickoff_and_save(inputs: dict) -> None:
 # ══════════════════════════════════════════
 
 def get_user_inputs():
-    """統一獲取使用者輸入的邏輯"""
-    print("\n" + "請提供訓練/執行參數")
-    print("=" * 55)
 
     # 目的地
     destination = input("\n請輸入旅遊目的地，國家 城市（例：日本 東京）：").strip() or "日本 東京"

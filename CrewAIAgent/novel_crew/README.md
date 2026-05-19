@@ -22,7 +22,7 @@
 writer（作家）
   │ {topic}
   │→ 根據主題創作初稿
-  │→ 字數控制在 500 字以內，含標題
+  │→ 字數約 600 字，含標題
   │→ 回傳完整小說初稿
   ▼
 editor（編輯）
@@ -90,13 +90,14 @@ Tool 本身把「呼叫 API → base64 解碼 → 寫檔」三步封裝進去，
 ### 安裝
 
 ```bash
-pip install crewai openai
+cd novel_crew
+uv sync
 ```
 
 ### 設定環境變數
-
+建立 .env 檔案：
 ```bash
-export OPENAI_API_KEY=sk-...
+OPENAI_API_KEY=openai_api_key
 ```
 
 CrewAI 預設使用 `OPENAI_API_KEY` 作為 LLM。若需改用其他模型，請參考 [CrewAI LLM 設定文件](https://docs.crewai.com/concepts/llms)。
@@ -104,8 +105,7 @@ CrewAI 預設使用 `OPENAI_API_KEY` 作為 LLM。若需改用其他模型，請
 ### 執行
 
 ```bash
-cd novel_crew
-python main.py
+crewai run
 ```
 
 ### 操作流程
