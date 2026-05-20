@@ -70,17 +70,17 @@ def get_user_inputs():
     destination = input("\n請輸入旅遊目的地，國家 城市（例：日本 東京）：").strip() or "日本 東京"
 
     # 日期
-    date = input("\n📅 請輸入出發日期（例：2026年8月）：").strip() or "2026年4月"
+    date = input("\n請輸入出發日期（例：2026年8月）：").strip() or "2026年4月"
 
     # 客戶類型
     customer_options = {
-        "1": "高級商務考察團",
+        "1": "高級商務團",
         "2": "親子家庭團",
-        "3": "銀髮樂齡團",
+        "3": "銀髮長輩團",
         "4": "蜜月情侶",
         "5": "學生背包客",
     }
-    print("\n👥 請選擇客戶類型：")
+    print("\n請選擇客戶類型：")
     for key, val in customer_options.items():
         print(f"   {key}. {val}")
 
